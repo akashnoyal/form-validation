@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-100 flex items-center justify-center">
+
+    <div class="bg-white w-80 p-8 rounded-lg shadow">
+        <h2 class="text-center text-xl font-bold mb-6">Register</h2>
+
+        <div class="mb-4">
+            <label for="name" class="block text-sm font-semibold mb-1">Name</label>
+            <input type="text" id="name" placeholder="Enter your name"
+                class="w-full border rounded px-3 py-2 text-sm outline-none">
+            <p id="name-err" class="text-red-500 text-xs mt-1 hidden">Name cannot be empty.</p>
+        </div>
+
+        <div class="mb-4">
+            <label for="email" class="block text-sm font-semibold mb-1">Email</label>
+            <input type="email" id="email" placeholder="Enter your Gmail address"
+                class="w-full border rounded px-3 py-2 text-sm outline-none">
+            <p id="email-err" class="text-red-500 text-xs mt-1 hidden">Enter a valid Gmail address.</p>
+        </div>
+
+        <div class="mb-6">
+            <label for="password" class="block text-sm font-semibold mb-1">Password</label>
+            <input type="password" id="password" placeholder="Min. 6 characters"
+                class="w-full border rounded px-3 py-2 text-sm outline-none">
+            <p id="pass-err" class="text-red-500 text-xs mt-1 hidden">Password must be at least 6 characters.</p>
+        </div>
+
+        <button id="submit"
+            class="w-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold py-2 rounded cursor-pointer">
+            Submit
+        </button>
+    </div>
+
+    <script>
+        const name     = document.getElementById('name');
+        const email    = document.getElementById('email');
+        const password = document.getElementById('password');
+        const btn      = document.getElementById('submit');
+
+        const emailRegex = /^[a-zA-Z0-9._+-]+@gmail\.com$/;
+
+        function setValid(input, errId, isValid) {
+            input.classList.remove('border-gray-300', 'border-red-400', 'border-green-400');
+            input.classList.add(isValid ? 'border-green-400' : 'border-red-400');
+
+            const err = document.getElementById(errId);
+            err.classList.toggle('hidden', isValid);
+        }
+
+        name.addEventListener('input', () => {
+            setValid(name, 'name-err', name.value.trim() !== '');
+        });
+
+        email.addEventListener('input', () => {
+            setValid(email, 'email-err', emailRegex.test(email.value));
+        });
+
+        password.addEventListener('input', () => {
+            setValid(password, 'pass-err', password.value.length >= 6);
+        });
+
+        // show errors on submit if fields are invalid
+        btn.addEventListener('click', () => {
+            const nameOk  = name.value.trim() !== '';
+            const emailOk = emailRegex.test(email.value);
+            const passOk  = password.value.length >= 6;
+
+            setValid(name,     'name-err',  nameOk);
+            setValid(email,    'email-err', emailOk);
+            setValid(password, 'pass-err',  passOk);
+
+            if (nameOk && emailOk && passOk) {
+                alert('Form submitted successfully!');
+            }
+        });
+    </script>
+
+</body>
+</html>
